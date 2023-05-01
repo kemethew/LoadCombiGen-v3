@@ -1,0 +1,12 @@
+Option Explicit
+
+Sub SAFE_Linear_Load_Generator_Output()
+
+If error_checking = True Then
+Else
+    Call SAFE_NonLinear_Load_Generator
+    Call SAFE_Linear_Load_Generator
+End If
+
+End Sub
+

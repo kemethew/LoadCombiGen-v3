@@ -1,0 +1,112 @@
+Option Explicit
+
+Public Function error_checking() As Boolean
+
+Dim source As Worksheet
+Dim linear As Worksheet
+Dim nonlinear As Worksheet
+Dim error_result As Boolean
+
+Set source = ThisWorkbook.Sheets("LC helper")
+Set linear = ThisWorkbook.Sheets("SAFEv12 LC Linear")
+Set nonlinear = ThisWorkbook.Sheets("SAFEv12 LC NonLinear")
+
+If Application.WorksheetFunction.CountIf(source.Range("c2:c51"), "") <> _
+    Application.WorksheetFunction.CountIf(source.Range("b2:b51"), "") Then
+    linear.Range("a4:xfd1048576").ClearContents
+    nonlinear.Range("a4:xfd1048576").ClearContents
+    MsgBox ("Resolve error in INPUT TAB first.")
+    error_result = True
+    error_checking = error_result
+ElseIf Application.WorksheetFunction.CountIf(source.Range("c2:c51"), "D(slfwt)") = 0 Then
+    linear.Range("a4:xfd1048576").ClearContents
+    nonlinear.Range("a4:xfd1048576").ClearContents
+    MsgBox ("Please include one D(slfwt) load type in Step 1.")
+    error_result = True
+    error_checking = error_result
+ElseIf Application.WorksheetFunction.CountIf(source.Range("c2:c51"), "D(slfwt)") > 1 Then
+    linear.Range("a4:xfd1048576").ClearContents
+    nonlinear.Range("a4:xfd1048576").ClearContents
+    MsgBox ("Only one D(slfwt) load type in Step 1 is allowed.")
+    error_result = True
+    error_checking = error_result
+ElseIf Application.WorksheetFunction.CountIf(source.Range("c2:c51"), "W") > 36 Then
+    linear.Range("a4:xfd1048576").ClearContents
+    nonlinear.Range("a4:xfd1048576").ClearContents
+    MsgBox ("Maximum number of Wind Cases = 36")
+    error_result = True
+    error_checking = error_result
+ElseIf Application.WorksheetFunction.CountIf(source.Range("c2:c51"), "EQx") > 0 And _
+        Application.WorksheetFunction.CountIf(source.Range("c2:c51"), "EQz/y") = 0 Then
+    linear.Range("a4:xfd1048576").ClearContents
+    nonlinear.Range("a4:xfd1048576").ClearContents
+    MsgBox ("EQ partners with EQ." & Chr(13) & Chr(10) & "EQ1 partners with EQ2 or EQ3." & Chr(13) & Chr(10) & _
+            "EQ2 partners with EQ1 or EQ3." & Chr(13) & Chr(10) & "EQ3 partners with EQ1 or EQ2.")
+    error_result = True
+    error_checking = error_result
+ElseIf Application.WorksheetFunction.CountIf(source.Range("c2:c51"), "EQz/y") > 0 And _
+        Application.WorksheetFunction.CountIf(source.Range("c2:c51"), "EQx") = 0 Then
+    linear.Range("a4:xfd1048576").ClearContents
+    nonlinear.Range("a4:xfd1048576").ClearContents
+    MsgBox ("EQ partners with EQ." & Chr(13) & Chr(10) & "EQ1 partners with EQ2 or EQ3." & Chr(13) & Chr(10) & _
+            "EQ2 partners with EQ1 or EQ3." & Chr(13) & Chr(10) & "EQ3 partners with EQ1 or EQ2.")
+    error_result = True
+    error_checking = error_result
+ElseIf Application.WorksheetFunction.CountIf(source.Range("c2:c51"), "EQx-1") > 0 And _
+        Application.WorksheetFunction.CountIf(source.Range("c2:c51"), "EQz/y-2") + _
+        Application.WorksheetFunction.CountIf(source.Range("c2:c51"), "EQz/y-3") = 0 Then
+    linear.Range("a4:xfd1048576").ClearContents
+    nonlinear.Range("a4:xfd1048576").ClearContents
+    MsgBox ("EQ partners with EQ." & Chr(13) & Chr(10) & "EQ1 partners with EQ2 or EQ3." & Chr(13) & Chr(10) & _
+            "EQ2 partners with EQ1 or EQ3." & Chr(13) & Chr(10) & "EQ3 partners with EQ1 or EQ2.")
+    error_result = True
+    error_checking = error_result
+ElseIf Application.WorksheetFunction.CountIf(source.Range("c2:c51"), "EQx-2") > 0 And _
+        Application.WorksheetFunction.CountIf(source.Range("c2:c51"), "EQz/y-1") + _
+        Application.WorksheetFunction.CountIf(source.Range("c2:c51"), "EQz/y-3") = 0 Then
+    linear.Range("a4:xfd1048576").ClearContents
+    nonlinear.Range("a4:xfd1048576").ClearContents
+    MsgBox ("EQ partners with EQ." & Chr(13) & Chr(10) & "EQ1 partners with EQ2 or EQ3." & Chr(13) & Chr(10) & _
+            "EQ2 partners with EQ1 or EQ3." & Chr(13) & Chr(10) & "EQ3 partners with EQ1 or EQ2.")
+    error_result = True
+    error_checking = error_result
+ElseIf Application.WorksheetFunction.CountIf(source.Range("c2:c51"), "EQx-3") > 0 And _
+        Application.WorksheetFunction.CountIf(source.Range("c2:c51"), "EQz/y-2") + _
+        Application.WorksheetFunction.CountIf(source.Range("c2:c51"), "EQz/y-1") = 0 Then
+    linear.Range("a4:xfd1048576").ClearContents
+    nonlinear.Range("a4:xfd1048576").ClearContents
+    MsgBox ("EQ partners with EQ." & Chr(13) & Chr(10) & "EQ1 partners with EQ2 or EQ3." & Chr(13) & Chr(10) & _
+            "EQ2 partners with EQ1 or EQ3." & Chr(13) & Chr(10) & "EQ3 partners with EQ1 or EQ2.")
+    error_result = True
+    error_checking = error_result
+ElseIf Application.WorksheetFunction.CountIf(source.Range("c2:c51"), "EQz/y-1") > 0 And _
+        Application.WorksheetFunction.CountIf(source.Range("c2:c51"), "EQx-2") + _
+        Application.WorksheetFunction.CountIf(source.Range("c2:c51"), "EQx-3") = 0 Then
+    linear.Range("a4:xfd1048576").ClearContents
+    nonlinear.Range("a4:xfd1048576").ClearContents
+    MsgBox ("EQ partners with EQ." & Chr(13) & Chr(10) & "EQ1 partners with EQ2 or EQ3." & Chr(13) & Chr(10) & _
+            "EQ2 partners with EQ1 or EQ3." & Chr(13) & Chr(10) & "EQ3 partners with EQ1 or EQ2.")
+    error_result = True
+    error_checking = error_result
+ElseIf Application.WorksheetFunction.CountIf(source.Range("c2:c51"), "EQz/y-2") > 0 And _
+        Application.WorksheetFunction.CountIf(source.Range("c2:c51"), "EQx-1") + _
+        Application.WorksheetFunction.CountIf(source.Range("c2:c51"), "EQx-3") = 0 Then
+    linear.Range("a4:xfd1048576").ClearContents
+    nonlinear.Range("a4:xfd1048576").ClearContents
+    MsgBox ("EQ partners with EQ." & Chr(13) & Chr(10) & "EQ1 partners with EQ2 or EQ3." & Chr(13) & Chr(10) & _
+            "EQ2 partners with EQ1 or EQ3." & Chr(13) & Chr(10) & "EQ3 partners with EQ1 or EQ2.")
+    error_result = True
+    error_checking = error_result
+ElseIf Application.WorksheetFunction.CountIf(source.Range("c2:c51"), "EQz/y-3") > 0 And _
+        Application.WorksheetFunction.CountIf(source.Range("c2:c51"), "EQx-2") + _
+        Application.WorksheetFunction.CountIf(source.Range("c2:c51"), "EQx-1") = 0 Then
+    linear.Range("a4:xfd1048576").ClearContents
+    nonlinear.Range("a4:xfd1048576").ClearContents
+    MsgBox ("EQ partners with EQ." & Chr(13) & Chr(10) & "EQ1 partners with EQ2 or EQ3." & Chr(13) & Chr(10) & _
+            "EQ2 partners with EQ1 or EQ3." & Chr(13) & Chr(10) & "EQ3 partners with EQ1 or EQ2.")
+    error_result = True
+    error_checking = error_result
+End If
+
+End Function
+

@@ -1,0 +1,37 @@
+Option Explicit
+
+Sub STAAD_LC_Generator()
+
+If error_checking = True Then
+Else
+    Application.ScreenUpdating = False
+    Application.Calculation = xlCalculationManual
+    Application.EnableEvents = False
+    
+    Dim q As Integer
+    Dim r As Range
+    Dim rstart As String
+    q = 0
+    
+    ThisWorkbook.Worksheets("STAAD LC").Select
+    ThisWorkbook.Worksheets("STAAD LC").AutoFilterMode = False
+    ThisWorkbook.Worksheets("STAAD LC").Range("A1").AutoFilter field:=10, Criteria1:="<>0"
+    
+    Do
+        q = q + 1
+    '    ThisWorkbook.Worksheets("STAAD LC").Range("H1").Offset(q, 0).Select
+    Loop While ThisWorkbook.Worksheets("STAAD LC").Range("j1").Offset(q, 0).Value = 0
+    
+    Set r = ThisWorkbook.Worksheets("STAAD LC").Range("j1").Offset(q, 0)
+    rstart = r.Address
+    Application.Goto ThisWorkbook.Worksheets("STAAD LC").Range("a1"), True
+    ThisWorkbook.Worksheets("STAAD LC").Range(rstart, Range(rstart).End(xlDown)).Select
+    
+    Application.ScreenUpdating = True
+    Application.Calculation = xlCalculationAutomatic
+    Application.EnableEvents = True
+
+End If
+
+End Sub
+

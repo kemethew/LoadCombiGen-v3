@@ -1,0 +1,108 @@
+Option Explicit
+
+Sub Create_SAFEv12_NonLinear_Analysis_TXT_File()
+
+Dim fso As New FileSystemObject
+Dim SFfile As Object
+Dim fname As String
+Dim q As Long 'counter
+Dim wssps As Worksheet
+Dim wsnllt As Worksheet
+
+If error_checking = True Then
+Else
+    Call SAFE_Linear_Load_Generator
+    Call SAFE_NonLinear_Load_Generator
+    ThisWorkbook.Sheets("INPUT TAB").Select
+    
+    Set fso = CreateObject("scripting.filesystemobject")
+    fname = Application.GetSaveAsFilename(InitialFileName:="NonLinear $SF " & Format(Date, "YY-MM-DD") & _
+            " " & Format(Time, "HH-MM"), FileFilter:="All Files, *.$SF", Title:="Save As")
+    If fname = "False" Then
+        Exit Sub
+    End If
+    Set SFfile = fso.createtextfile(fname, True)
+    
+    
+    'Contents coming from standard $SF text file, do not add rows in sheet reference
+    For q = 1 To 44
+        SFfile.write ThisWorkbook.Worksheets("v12 $SF contents").Cells(q, 1).Value & vbCrLf
+    Next q
+    
+    SFfile.write vbCrLf
+    
+    Set wssps = ThisWorkbook.Worksheets("STAAD P&L to SAFEv12 $SF")
+    For q = 1 To 49997 '49997 is the data limit from the reference file
+        If wssps.Cells(q, 2).Value <> vbNullString Then
+            SFfile.write wssps.Cells(q, 2).Value & vbCrLf
+        End If
+    Next q
+    
+    SFfile.write vbCrLf
+                
+    Set wsnllt = ThisWorkbook.Worksheets("nLinLoadTable to SAFEv12 $SF")
+    For q = 1 To 15000 '15000 is the data limit from the reference file
+        If wsnllt.Cells(q, 1).Value <> vbNullString Then
+            SFfile.write wsnllt.Cells(q, 1).Value & vbCrLf
+        End If
+    Next q
+    
+    SFfile.write vbCrLf
+                 
+    For q = 1 To 15000 '15000 is the data limit from the reference file
+        If wsnllt.Cells(q, 2).Value <> vbNullString Then
+            SFfile.write wsnllt.Cells(q, 2).Value & vbCrLf
+        End If
+    Next q
+    
+    SFfile.write vbCrLf
+     
+    For q = 1 To 15000 '15000 is the data limit from the reference file
+        If wsnllt.Cells(q, 3).Value <> vbNullString Then
+            SFfile.write wsnllt.Cells(q, 3).Value & vbCrLf
+        End If
+    Next q
+        
+    SFfile.write vbCrLf
+     
+    For q = 1 To 15000 '15000 is the data limit from the reference file
+        If wsnllt.Cells(q, 4).Value <> vbNullString Then
+            SFfile.write wsnllt.Cells(q, 4).Value & vbCrLf
+        End If
+    Next q
+     
+    SFfile.write vbCrLf
+     
+    For q = 1 To 15000 '15000 is the data limit from the reference file
+        If wsnllt.Cells(q, 5).Value <> vbNullString Then
+            SFfile.write wsnllt.Cells(q, 5).Value & vbCrLf
+        End If
+    Next q
+     
+    SFfile.write vbCrLf
+    
+    'Contents coming from standard $SF text file, do not add rows in sheet reference
+    For q = 568 To 589
+        SFfile.write ThisWorkbook.Worksheets("v12 $SF contents").Cells(q, 1).Value & vbCrLf
+    Next q
+    
+    SFfile.write vbCrLf
+    
+    For q = 1 To 49997 '49997 is the data limit from the reference file
+        If wssps.Cells(q, 1).Value <> vbNullString Then
+            SFfile.write wssps.Cells(q, 1).Value & vbCrLf
+        End If
+    Next q
+        
+    SFfile.write vbCrLf
+    
+    'Contents coming from standard $SF text file, do not add rows in sheet reference
+    For q = 595 To 646
+        SFfile.write ThisWorkbook.Worksheets("v12 $SF contents").Cells(q, 1).Value & vbCrLf
+    Next q
+    
+    SFfile.Close
+End If
+
+End Sub
+

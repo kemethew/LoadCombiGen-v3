@@ -1,0 +1,13 @@
+Option Explicit
+
+Sub Generate_All()
+
+If error_checking = True Then
+Else
+    Call STAAD_LC_Generator
+    Call SAFE_Linear_Load_Generator
+    Call SAFE_NonLinear_Load_Generator
+    ThisWorkbook.Sheets("INPUT TAB").Select
+End If
+End Sub
+
